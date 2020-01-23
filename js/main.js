@@ -47,11 +47,11 @@ function LoadResources(onloaded) {
     }
 
     // loads audio
-    audio.menu = new Audio("sound/caketown.mp3");
-    audio.game = new Audio("sound/shakeAndBake.mp3");
+    audio.menu = new Audio("sounds/happytune.mp3");
+    audio.gameover = new Audio("sounds/gameover.wav");
     audio.playerDead = "null";
     audio.enemyDead = "null";
-    audio.bullet = "";  
+    audio.bullet = new Audio("sounds/laser.wav");  
 
     // initialize background elements
 }
@@ -102,15 +102,16 @@ function ChangeState() {
     switch (gameState) {
 
         case 0:     // Start menu
-            audioMenu.play();
+            audio.menu.play();
             isGameover = false;
             nextState = 1;
             NewButton(y[0], sy[0], nextState);
             break;
         case 1:     // Gameplay
-            gameRound = 99;
+            audio.menu.pause();
+            gameRound = 0;
             score = 0;
-            lives = 3;
+            health = 100;
             CreateScene();
             CreateBackground();
             NewPlayer();
@@ -118,6 +119,7 @@ function ChangeState() {
             camera = new Camera(player);
             break;
         case 2:     // Game over
+            audio.menu.play();
             nextState = 1;
             NewButton(y[0], sy[1], nextState);
             break;

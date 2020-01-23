@@ -100,13 +100,18 @@ class Enemy {
         this.x += disp.x * this.speed * dt.global;
         this.y += disp.y * this.speed * dt.global;
 
-        if (this.collisionPlayer(player, this) && !player.dead) {
-            player.dead = true;            
+        // if enemy hits player
+        if (this.collisionPlayer(player, this) && !player.hit) {
+            console.log("hit player");
+
+            this.dead = true;
+
+            player.hit = true;            
         }
-/*
-        let dx = this.collider.position.x - this.player.collider.position.x;
-        let dy = this.collider.position.y - this.player.collider.position.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);*/
+
+        if (this.dead) {
+            // DESTROY ENEMY
+        }
     }
 
     collisionPlayer(player, enemy) {
@@ -115,8 +120,6 @@ class Enemy {
         let dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < this.collider.r + this.player.collider.r) {
-            console.log("DEAD");
-
             isCollision = true;
             player.collider.fill = "rgba(0, 255, 230, 0.25)";
         }
@@ -126,14 +129,6 @@ class Enemy {
         }
 
         return isCollision;
-
-/*
-        if (dx > (player.w / 2 + enemy.r) || dy > (player.h / 2 + enemy.r)) {
-            isCollision = false;
-        }
-        else if (dx <= (player.w) || dy <= (player.h)) {
-            isCollision = true;
-        }*/
     }
 }
 

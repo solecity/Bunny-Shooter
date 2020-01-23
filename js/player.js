@@ -20,13 +20,10 @@ class Player {
         // sprite movement / direction
         this.speed = 200;
         this.rotation = 0;
-
-        // player hud
-        this.score = 0;
-        this.lives = 3;
         
-        // check if is alive
+        // check if player got hit
         this.dead = false;
+        this.hit = false;
 
         // box collider
         this.collider = {
@@ -137,6 +134,7 @@ class Player {
         // new bullet
         if (Input.IsMousePressed()) {
             this.shootBullets();
+            audio.bullet.play();
         }
 
         // update the bullets

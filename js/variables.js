@@ -36,12 +36,12 @@ let graphics = {
         path: "assets/ui/buttons.png",
         image: null
     },
-    uiLife: {
-        path: "assets/ui/life.png",
+    ui: {
+        path: "assets/ui/ui.png",
         image: null
     },
-    uiScore: {
-        path: "assets/ui/points.png",
+    counter: {
+        path: "assets/ui/counter.png",
         image: null
     },
     player: {
@@ -54,15 +54,10 @@ let graphics = {
     }
 };
 
-
-// MUSIC ASSETS REFERENCES
-let music = {
-}
-
-// SOUNDS ASSETS REFERENCES
+// AUDIO ASSETS REFERENCES
 let audio = {
-    menu: new Audio("sound/caketown.mp3"),
-    game: new Audio("sound/shakeAndBake.mp3"),
+    menu: null,
+    gameover: null,
     playerDead: null,
     enemyDead: null,
     bullet: null
@@ -70,18 +65,17 @@ let audio = {
 
 
 // MENU
-let startButton, restartButton, player1Button, player2Button;
 let buttons = [];
 let buttonHoover;
 
 
 // GAME
 let gameState = 1;
-let gameRound = 0;
+let gameRound;
 let camera, scene, background;
 
 let score = 50;
-let lives = 0;
+let health = 100;
 let enemyCount = 0;
 
 let player = null;
@@ -95,4 +89,3 @@ let clouds = [];
 
 // GAME STATES
 let isCollision = false;
-let isGameover = false;

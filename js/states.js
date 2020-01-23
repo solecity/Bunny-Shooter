@@ -38,6 +38,7 @@ function StartMenu() {
     }
 }
 
+
 // UI TEXT
 function UIText(text, x, y, align, size) {
     ctx.font = `${size}px sans-serif`;
@@ -51,30 +52,47 @@ function UIText(text, x, y, align, size) {
 // UI
 function UI() {
     let icon = {
-        sx: [0, 20],
+        sx: [0, 30],
         sy: 0,
-        x: [30, 60, canvas.width - 20],
-        y: 30,
+        pos: 30,
         size: 30
     };
-
-    let timeConverted = Math.floor(gameRound / 60);
+    let bar = {
+        w: 100,
+        h: 15,
+        color: ["#e82828", "#3eb71c"],
+        health: health
+    };
     let gameTimer = {
         x: canvas.width / 2,
-        y: 40
+        y: 40,
+        value: Math.floor(gameRound / 60)
     };
 
-    // player score
-    ctx.drawImage(graphics.uiScore.image, icon.sx[0], icon.sy, icon.size, icon.size, icon.x[0], icon.y, icon.size, icon.size);
-    UIText(score, icon.x[1], icon.y + icon.size / 2, "left", 20);
 
-    // player lives
-    for (let i = 1; i <= lives; i++) {
-        ctx.drawImage(graphics.uiLife.image, icon.sx[0], icon.sy, icon.size, icon.size, icon.x[2] - i * icon.x[0], icon.y, icon.size, icon.size);
+    // player health bar
+    ctx.drawImage(graphics.ui.image, icon.sx[0], icon.sy, icon.size, icon.size, canvas.width - 2 * icon.size, icon.pos, icon.size, icon.size);
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(canvas.width - 1.8 * bar.w, icon.pos + bar.h / 2, bar.w, bar.h);
+
+    if (bar.health > 50) {
+        ctx.fillStyle = bar.color[1];
     }
+    else {
+        ctx.fillStyle = bar.color[0];
+    }
+    ctx.fillRect(canvas.width - 1.8 * bar.w, icon.pos + bar.h / 2, health, bar.h);
+    /*for (let i = 1; i <= lives; i++) {
+        ctx.drawImage(graphics.ui.image, icon.sx[1], icon.sy, icon.size, icon.size, icon.x[2] - i * icon.x[0], icon.y, icon.size, icon.size);
+    }*/
+
+    // player score
+    ctx.drawImage(graphics.ui.image, icon.sx[1], icon.sy, icon.size, icon.size, icon.pos, icon.pos, icon.size, icon.size);
+    UIText(score, 70, icon.pos + icon.size / 2, "left", 20);
 
     // timer
-    UIText(timeConverted, gameTimer.x, gameTimer.y, "center", 40);
+    UIText(gameTimer.value, gameTimer.x, gameTimer.y, "center", 40);
 }
 
 
@@ -114,18 +132,20 @@ function Gameplay() {
     // ui
     UI();
 
-    // if player collides with enemy
-    if (player.dead) {
+    // if player gets hit by an enemy
+    if (player.hit) {
         player.x = canvas.width / 2;
         player.y = canvas.height / 2;
 
-        lives--;
+        health -= 50;
 
-        player.dead = false;
+        player.hit = false;
     }
 
     // if has no more lives left
-    if (lives <= 0) {
+    if (health <= 0) {
+        audio.gameover.play();
+
         gameState = 2;
         ChangeState();
     }
@@ -141,18 +161,33 @@ function GameOver() {
         h: 70
     };
 
+    let icon = {
+        sx: [0, 50],
+        sy: 0,
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        size: 50
+    };
     let enemy_size = 50;
+
 
     // background
     ctx.fillStyle = "#8cceed";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+
     // title
     ctx.drawImage(graphics.gameoverTitle.image, canvas.width / 2 - title.w / 2, canvas.height / 4 - title.h / 2, title.w, title.h);
 
+
     // score
-    ctx.drawImage(graphics.enemy.image, 0, 0, enemy_size, enemy_size, canvas.width / 2 - 1.5 * enemy_size, canvas.height / 2 - enemy_size, enemy_size, enemy_size);
-    UIText(score, canvas.width / 2 + enemy_size / 3, canvas.height / 2 - enemy_size / 2, "left", 30);
+    ctx.drawImage(graphics.counter.image, icon.sx[0], icon.sy, icon.size, icon.size, icon.x / 2 + icon.size - 5, icon.y - icon.size, icon.size, icon.size);
+    UIText(score, icon.x / 2 + 2 * icon.size, icon.y - icon.size / 2, "left", 30);
+
+
+    // timer
+    ctx.drawImage(graphics.counter.image, icon.sx[1], icon.sy, icon.size, icon.size, icon.x + icon.size - 5, icon.y - icon.size, icon.size, icon.size);
+    UIText(Math.floor(gameRound / 60), icon.x + icon.size * 2, icon.y - icon.size / 2, "left", 30);
 
 
     // button
