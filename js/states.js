@@ -152,7 +152,7 @@ function Gameplay() {
 
     // collisions enemy - player
     for (let i = 0; i < enemies.length; i++) {
-        if (collisions(player.collider, enemies[i].collider)) {
+        if (collisions(enemies[i].collider, player.collider)) {
             console.log("player hiit")
             player.hit = true;
 

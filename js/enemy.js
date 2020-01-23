@@ -1,8 +1,11 @@
 
 class Enemy {
-    constructor(sprite, x, y) {
+    constructor(sprite, x, y, player) {
         // sprite data
         this.sprite = sprite;
+
+        // target
+       this.player = player;
 
         // sprite initial position
         this.x = x;
@@ -44,10 +47,11 @@ class Enemy {
     draw() {
         // draw the player position
         ctx.fillStyle = "white";
-        ctx.fillRect(player.x, player.y, 10, 10);
+        ctx.fillRect(this.player.x, this.player.y, 10, 10);
 
         ctx.save();
 
+        // applies transformations
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation + 1.5708);
 
@@ -81,8 +85,8 @@ class Enemy {
 
         // rotation to face player
         this.rotation = Math.atan2(
-            player.y + camera.y - this.y,
-            player.x + camera.x - this.x
+            this.player.y + camera.y - this.y,
+            this.player.x + camera.x - this.x
         );
 
         // initial position of collider
@@ -102,7 +106,7 @@ class Enemy {
         if (this.hit) {
             console.log("hit player");
 
-            player.hit = true;   
+            this.player.hit = true;   
             this.dead = true;
         }
     }
@@ -116,7 +120,7 @@ class Enemy {
     }
 }
 
-function NewEnemy() {
+function NewEnemy(player) {
     let left = {
         x: RandomBetween(-50, 0),
         y: RandomBetween(-50, scene.h + 50)
@@ -135,9 +139,6 @@ function NewEnemy() {
     };
 
     let origin = [left, right, top, bottom];
-
-    let enemy = origin[Math.round(RandomBetween(0, 3))];
-    console.log(enemy)
     
-    enemies.push(new Enemy(graphics.enemy.image, enemy.x, enemy.y));
+    enemies.push(new Enemy(graphics.enemy.image, enemy.x, enemy.y, player));
 }

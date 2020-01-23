@@ -52,7 +52,7 @@ class Player {
 
         ctx.save();
 
-        // applies transformationsw
+        // applies transformations
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation + 1.5708);
 
@@ -164,11 +164,8 @@ class Player {
 
         NewBullet(this, target);
     }
-
-    destroy() {
-    }
 }
 
 function NewPlayer() {
-    player = new Player(graphics.player.image, scene.w / 2, scene.h / 2);
+    player = new Player(graphics.player.image, canvas.width / 2, canvas.height / 2);
 }

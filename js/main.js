@@ -100,10 +100,13 @@ function initialize() {
     NewPlayer();
 
     // initialize enemies
-    for (let i = 0; i < 2; i++)
+    for (let i = 0; i < 1; i++)
     {
-        NewEnemy();
+        enemies.push(new Enemy(graphics.enemy.image, 10, 20, player));
+        enemies.push(new Enemy(graphics.enemy.image, 50, 80, player));
+        //NewEnemy(player);
     }
+    console.log(enemies)
 }
 
 
@@ -120,11 +123,10 @@ function ChangeState() {
     let sy = [0, 60, 120, 180];
     let nextState;
 
-    initialize();
-
     switch (gameState) {
 
         case 0:     // Start menu
+            audio.menu.currentTime = 0.01;
             audio.menu.play();
             isGameover = false;
             nextState = 1;
@@ -136,6 +138,8 @@ function ChangeState() {
             gameRound = 0;
             score = 0;
             health = 100;
+
+            initialize();
             
             background.start();
             middleground.start();
@@ -144,6 +148,7 @@ function ChangeState() {
             camera = new Camera(player);
             break;
         case 2:     // Game over
+            audio.menu.currentTime = 0.01;
             audio.menu.play();
             nextState = 1;
             NewButton(y[0], sy[1], nextState);
