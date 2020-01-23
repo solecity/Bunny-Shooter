@@ -58,7 +58,7 @@ let graphics = {
 let audio = {
     menu: null,
     gameover: null,
-    playerDead: null,
+    playerHit: null,
     enemyDead: null,
     bullet: null
 }

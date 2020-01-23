@@ -49,9 +49,9 @@ function LoadResources(onloaded) {
     // loads audio
     audio.menu = new Audio("sounds/happytune.mp3");
     audio.gameover = new Audio("sounds/gameover.wav");
-    audio.playerDead = "null";
+    audio.playerHit = new Audio("sounds/bounce.wav");
     audio.enemyDead = "null";
-    audio.bullet = new Audio("sounds/laser.wav");  
+    audio.bullet = new Audio("sounds/throw.wav");  
 
     // initialize background elements
 }

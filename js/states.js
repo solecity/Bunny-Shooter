@@ -134,6 +134,7 @@ function Gameplay() {
 
     // if player gets hit by an enemy
     if (player.hit) {
+        audio.playerHit.play();
         player.x = canvas.width / 2;
         player.y = canvas.height / 2;
 
@@ -146,7 +147,7 @@ function Gameplay() {
     if (health <= 0) {
         audio.gameover.play();
 
-        gameState = 2;
+        gameState = 1;
         ChangeState();
     }
 }
