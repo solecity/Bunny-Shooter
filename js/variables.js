@@ -72,7 +72,8 @@ let buttonHoover;
 // GAME
 let gameState = 1;
 let gameRound;
-let camera, scene, background;
+let camera, scene
+let background, middleground, foreground;
 
 let score = 50;
 let health = 100;
@@ -82,9 +83,10 @@ let player = null;
 let enemy = null;
 let enemies = [];
 
-let flowers = [];
+let flowerGroups = [];
 let fireflies = [];
-let clouds = [];
+//let firefliesGroups = [];
+let cloudGroups = [];
 
 
 // GAME STATES

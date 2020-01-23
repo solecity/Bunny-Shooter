@@ -42,7 +42,7 @@ function StartMenu() {
 // UI TEXT
 function UIText(text, x, y, align, size) {
     ctx.font = `${size}px sans-serif`;
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "#606060";
     ctx.textAlign = align;
     ctx.textBaseline = "middle";
     ctx.fillText(text, x, y);
@@ -89,7 +89,7 @@ function UI() {
 
     // player score
     ctx.drawImage(graphics.ui.image, icon.sx[1], icon.sy, icon.size, icon.size, icon.pos, icon.pos, icon.size, icon.size);
-    UIText(score, 70, icon.pos + icon.size / 2, "left", 20);
+    UIText(score, 70, icon.pos + icon.size / 2, "left", 30);
 
     // timer
     UIText(gameTimer.value, gameTimer.x, gameTimer.y, "center", 40);
@@ -102,11 +102,11 @@ function Gameplay() {
 
     camera.preDraw();
 
+    // parallax
     scene.draw();
     background.draw();
-
-    ctx.strokeStyle = "red";
-    ctx.strokeRect(50, 50, 150, 150);
+    middleground.draw();
+    middleground.update();
 
     // starts timer
     gameRound++;
@@ -126,6 +126,8 @@ function Gameplay() {
     // generate enemy
     enemy.update();
     enemy.draw();
+
+    foreground.draw();
 
     camera.posDraw();
 

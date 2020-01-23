@@ -1,4 +1,5 @@
 
+// CAMERA
 class Camera {
     constructor(player) {
         this.player = player;
@@ -34,57 +35,125 @@ class Camera {
     }
 }
 
+
+// GRASS
 function CreateScene() {
     scene = {
-        w: canvas.width + 150,
-        h: canvas.height + 150,
-        start: function() {
-            for (let i = 0; i < 20; i++) {
-                var flower = {
-                    x: RandomBetween(0, scene.w),
-                    y: RandomBetween(0, scene.h),
-                    r: RandomBetween(0.5, 2)
-                }
-                flowers.push(flower);
-            }
-        },
-        draw: function() {
-            // grass
+        w: canvas.width * 2,
+        h: canvas.height * 2,
+        draw: function () {
             ctx.fillStyle = "#b5e0a4";
             ctx.fillRect(0, 0, this.w, this.h);
-            
-            // flowers
-            ctx.fillStyle = "white";
-            for (let i = 0; i < flowers.length; i++) {
-                ctx.beginPath();
-                ctx.arc(flowers[i].x, flowers[i].y, flowers[i].r, 0, pi2, false);
-                ctx.fill();
+        }
+    }
+}
+
+
+// FLOWERS
+function CreateBackground() {
+    background = {
+        groupLength: 20,
+        colors: ["#ffffff", "#99c8f7", "#ff9cd6"],
+        start: function () {
+            for (let i = 0; i < this.groupLength; i++) {
+                let tmpLeng = Math.round(RandomBetween(1, 10));
+                let flowerGroup = {
+                    x: RandomBetween(0, scene.w),
+                    y: RandomBetween(0, scene.h),
+                    flowers: []
+                }
+
+                for (let j = 0; j < tmpLeng; j++) {
+                    let flower = {
+                        x: RandomBetween((flowerGroup.x - RandomBetween(0, 30)), (flowerGroup.x + RandomBetween(0, 30))),
+                        y: RandomBetween((flowerGroup.y - RandomBetween(0, 30)), (flowerGroup.y + RandomBetween(0, 30))),
+                        r: RandomBetween(1, 4),
+                        color: this.colors[Math.round(RandomBetween(0, 2))]
+                    };
+                    flowerGroup.flowers.push(flower);
+                }
+                flowerGroups.push(flowerGroup);
+            }
+        },
+        draw: function () {
+            for (let i = 0; i < flowerGroups.length; i++) {
+                for (let j = 0; j < flowerGroups[i].flowers.length; j++) {
+                    ctx.fillStyle = flowerGroups[i].flowers[j].color;
+                    ctx.beginPath();
+                    ctx.arc(flowerGroups[i].flowers[j].x, flowerGroups[i].flowers[j].y, flowerGroups[i].flowers[j].r, 0, pi2, false);
+                    ctx.fill();
+                }
             }
         }
     }
 }
 
-function CreateBackground() {
-    background = {
-        flowers: [],
-        firefly: {
-            x: 320,
-            y: 320,
-            size: 50,
-            speed: 5
-        },
-        clouds: {
-            x: 140,
-            y: 140,
-            size: 80,
-            speed: 20
+
+// FIREFLIES
+function CreateMiddleground() {
+    middleground = {
+        groupLength: 60,
+        speed: 40,
+        start: function () {
+            for (let i = 0; i < this.groupLength; i++) {
+                NewParticle(this.speed);
+            }
         },
         draw: function() {
-            ctx.fillStyle = "yellow";
-            ctx.fillRect(this.firefly.x - camera.x / this.firefly.speed, this.firefly.y - camera.y / this.firefly.speed, this.firefly.size, this.firefly.size);
+            for (let i = 0; i < fireflies.length; i++) {
+                fireflies[i].draw();
+            }
+        },
+        update: function() {
+            for (let i = 0; i < fireflies.length; i++) {
+                fireflies[i].update();
+            }
+        }
+    }
+}
 
-            ctx.fillStyle = "white";
-            ctx.fillRect(this.clouds.x + camera.x / this.clouds.speed, this.clouds.y + camera.y / this.clouds.speed, this.clouds.size, this.clouds.size);
+
+// CLOUDS
+function CreateForeground() {
+    foreground = {
+        groupLength: 50,
+        color: "rgba(255, 255, 255, 0.3)",
+        speed: 5,
+        start: function () {
+            for (let i = 0; i < this.groupLength; i++) {
+                let tmpLeng = Math.round(RandomBetween(1, 3));
+                let cloudGroup = {
+                    x: RandomBetween(0, scene.w),
+                    y: RandomBetween(0, scene.h),
+                    clouds: []
+                }
+
+                for (let j = 0; j < tmpLeng; j++) {
+                    let cloud = {
+                        x: RandomBetween((cloudGroup.x - RandomBetween(0, 80)), (cloudGroup.x + RandomBetween(0, 80))),
+                        y: RandomBetween((cloudGroup.y - RandomBetween(0, 80)), (cloudGroup.y + RandomBetween(0, 80))),
+                        r: RandomBetween(10, 80)
+                    };
+                    cloudGroup.clouds.push(cloud);
+                }
+                cloudGroups.push(cloudGroup);
+            }
+        },
+        draw: function () {
+            for (let i = 0; i < cloudGroups.length; i++) {
+                for (let j = 0; j < cloudGroups[i].clouds.length; j++) {
+                    ctx.save();
+
+                    ctx.fillStyle = this.color;
+                    ctx.filter = "blur(15px)";      // feather effet
+
+                    ctx.beginPath();
+                    ctx.arc(cloudGroups[i].clouds[j].x + camera.x / this.speed, cloudGroups[i].clouds[j].y + camera.y / this.speed, cloudGroups[i].clouds[j].r, 0, pi2, false);
+                    ctx.fill();
+
+                    ctx.restore();
+                }
+            }
         }
     }
 }

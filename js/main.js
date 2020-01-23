@@ -54,6 +54,10 @@ function LoadResources(onloaded) {
     audio.bullet = new Audio("sounds/throw.wav");  
 
     // initialize background elements
+    CreateScene();
+    CreateBackground();
+    CreateMiddleground();
+    CreateForeground();
 }
 
 
@@ -95,6 +99,11 @@ function Loop() {
 function ChangeState() {
     buttons = [];
 
+    flowerGroups = [];
+    fireflies = [];
+    //firefliesGroups = [];
+    cloudGroups = [];
+
     let y = [canvas.height / 2 + 50, 2 * canvas.height / 4];
     let sy = [0, 60, 120, 180];
     let nextState;
@@ -109,11 +118,17 @@ function ChangeState() {
             break;
         case 1:     // Gameplay
             audio.menu.pause();
+
             gameRound = 0;
             score = 0;
             health = 100;
-            CreateScene();
-            CreateBackground();
+
+            //CreateMiddleground();
+            
+            background.start();
+            middleground.start();
+            foreground.start();
+
             NewPlayer();
             NewEnemy();
             camera = new Camera(player);
