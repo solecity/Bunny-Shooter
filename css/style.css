@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 100px auto;
+}
+
+#myCanvas {
+    width: 800px;
+    height: 600px;
+    margin: auto;
+  }
