@@ -3,11 +3,11 @@ class Player {
     constructor(sprite, x, y) {
         // sprite data
         this.sprite = sprite;
-        
+
         // sprite initial position
         this.x = x;
         this.y = y;
-        
+
         // sprite dimensions
         this.size = 50;
 
@@ -20,7 +20,7 @@ class Player {
         // sprite movement / direction
         this.speed = 200;
         this.rotation = 0;
-        
+
         // check if player got hit
         this.dead = false;
         this.hit = false;
@@ -36,10 +36,8 @@ class Player {
 
         // bullets
         this.bullets = [];
-        this.shotRatio = 0.1;
-        this.shotRatioAcum = 0;
+        this.isPressed = false;
 
-    
         // sprite sheet animation
         this.framesDuration = 1 / 4;
         this.frameCount = 3;
@@ -54,15 +52,16 @@ class Player {
 
         ctx.save();
 
+        // applies transformationsw
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation + 1.5708);
-    
+
         // draw player box
         ctx.fillStyle = this.collider.fill;
         ctx.fillRect(-this.pivot.x, -this.pivot.y, this.size, this.size);
-    
+
         // draw player
-        ctx.drawImage(this.sprite, this.currentFrame * this.size, 0, this.size, this.size, -this.pivot.x, -this.pivot.y, this.size, this.size);    
+        ctx.drawImage(this.sprite, this.currentFrame * this.size, 0, this.size, this.size, -this.pivot.x, -this.pivot.y, this.size, this.size);
 
         ctx.restore();
 
@@ -73,15 +72,13 @@ class Player {
         ctx.lineWidth = 3;
         ctx.stroke();
     }
-    
+
     update() {
         // animation
         this.currentFrameCountTime += dt.global;
-        if (this.currentFrameCountTime >= this.framesDuration)
-        {
+        if (this.currentFrameCountTime >= this.framesDuration) {
             // update the animation with the new frame
             this.currentFrame = (this.currentFrame + 1) % this.frameCount;
-
             this.currentFrameCountTime = 0;
         }
 
@@ -94,7 +91,7 @@ class Player {
         // initial position of collider
         this.collider.x = this.x;
         this.collider.y = this.y;
-        
+
         // displacement vector
         let disp = { x: 0, y: 0 };
 
@@ -117,24 +114,39 @@ class Player {
         this.x += disp.x * this.speed * dt.global;
         this.y += disp.y * this.speed * dt.global;
 
-        if (this.x < 0) {
-            this.x = 0;
+        // walls collisions - x
+        if (this.x <= this.size / 2) {
+            this.x = this.size / 2;
         }
-        else if (this.x + this.w > scene.w) {
-            this.x = scene.w - this.w;
+        else if (this.x + this.size / 2 > scene.w) {
+            this.x = scene.w - this.size / 2;
         }
 
-        if (this.y < 0) {
-            this.y = 0;
+        // walls collisions - y
+        if (this.y < this.size / 2) {
+            this.y = this.size / 2;
         }
-        else if (this.y + this.h > scene.h) {
-            this.y = scene.h - this.h;
+        else if (this.y + this.size / 2 > scene.h) {
+            this.y = scene.h - this.size / 2;
         }
-        
-        // new bullet
-        if (Input.IsMousePressed()) {
-            this.shootBullets();
-            audio.bullet.play();
+
+        // if mouse is pressed then the player can shoot only once
+        if (!this.isPressed) {
+            if (Input.IsMousePressed()) {
+                this.secondCounter = 0;
+                this.isPressed = true;
+
+                // audio
+                audio.bullet.currentTime = 0.01;
+                audio.bullet.play();  
+
+                this.shootBullets();
+            }
+        }
+
+        // if mouse is not pressed
+        if (!Input.IsMousePressed()) {
+            this.isPressed = false;
         }
 
         // update the bullets
@@ -142,6 +154,7 @@ class Player {
             this.bullets[i].update();
     }
 
+    // new bullet
     shootBullets() {
         let target = {
             x: Input.mouse.x,
@@ -149,11 +162,9 @@ class Player {
         }
 
         NewBullet(this, target);
-
-        console.log(player.bullets.length);
     }
 }
 
 function NewPlayer() {
-    player = new Player(graphics.player.image, canvas.width / 2, canvas.height / 2);
+    player = new Player(graphics.player.image, scene.w / 2, scene.h / 2);
 }

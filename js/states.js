@@ -69,7 +69,6 @@ function UI() {
         value: Math.floor(gameRound / 60)
     };
 
-
     // player health bar
     ctx.drawImage(graphics.ui.image, icon.sx[0], icon.sy, icon.size, icon.size, canvas.width - 2 * icon.size, icon.pos, icon.size, icon.size);
     ctx.strokeStyle = "white";
@@ -83,9 +82,6 @@ function UI() {
         ctx.fillStyle = bar.color[0];
     }
     ctx.fillRect(canvas.width - 1.8 * bar.w, icon.pos + bar.h / 2, health, bar.h);
-    /*for (let i = 1; i <= lives; i++) {
-        ctx.drawImage(graphics.ui.image, icon.sx[1], icon.sy, icon.size, icon.size, icon.x[2] - i * icon.x[0], icon.y, icon.size, icon.size);
-    }*/
 
     // player score
     ctx.drawImage(graphics.ui.image, icon.sx[1], icon.sy, icon.size, icon.size, icon.pos, icon.pos, icon.size, icon.size);
@@ -108,6 +104,10 @@ function Gameplay() {
     middleground.draw();
     middleground.update();
 
+    // screen center
+    //ctx.fillStyle = "red";
+    //ctx.fillRect(scene.w / 2, scene.w / 2, 50, 50);
+
     // starts timer
     gameRound++;
 
@@ -118,8 +118,8 @@ function Gameplay() {
     // generate bullet
     if (player.bullets.length != 0) {
         for (let i = 0; i < player.bullets.length; i++) {
-            player.bullets[i].update();
             player.bullets[i].draw();
+            player.bullets[i].update();
         }
     }
 
@@ -136,11 +136,15 @@ function Gameplay() {
 
     // if player gets hit by an enemy
     if (player.hit) {
+        // audio
+        audio.playerHit.currentTime = 0.01;
         audio.playerHit.play();
+
+        // resets to center
         player.x = canvas.width / 2;
         player.y = canvas.height / 2;
 
-        health -= 50;
+        health -= 10;
 
         player.hit = false;
     }
@@ -149,7 +153,7 @@ function Gameplay() {
     if (health <= 0) {
         audio.gameover.play();
 
-        gameState = 1;
+        gameState = 2;
         ChangeState();
     }
 }

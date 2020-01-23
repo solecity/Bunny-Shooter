@@ -49,8 +49,8 @@ function LoadResources(onloaded) {
     // loads audio
     audio.menu = new Audio("sounds/happytune.mp3");
     audio.gameover = new Audio("sounds/gameover.wav");
-    audio.playerHit = new Audio("sounds/bounce.wav");
-    audio.enemyDead = "null";
+    audio.playerHit = new Audio("sounds/player.wav");
+    audio.enemyDead = new Audio("sounds/bounce.wav");
     audio.bullet = new Audio("sounds/throw.wav");  
 
     // initialize background elements
@@ -101,7 +101,6 @@ function ChangeState() {
 
     flowerGroups = [];
     fireflies = [];
-    //firefliesGroups = [];
     cloudGroups = [];
 
     let y = [canvas.height / 2 + 50, 2 * canvas.height / 4];

@@ -85,7 +85,6 @@ let enemies = [];
 
 let flowerGroups = [];
 let fireflies = [];
-//let firefliesGroups = [];
 let cloudGroups = [];
 
 
