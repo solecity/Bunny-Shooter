@@ -29,9 +29,7 @@ class Player {
         this.collider = {
             x: 0,
             y: 0,
-            r: this.pivot.x,
-            fill: "blue",
-            stroke: "white"
+            r: this.pivot.x
         }
 
         // bullets
@@ -47,8 +45,8 @@ class Player {
 
     draw() {
         // draw the player pointer
-        ctx.fillStyle = "blue";
-        ctx.fillRect(Input.mouse.x + camera.x - 1, Input.mouse.y + camera.y - 1, 10, 10);
+        ctx.fillStyle = "red";
+        ctx.fillRect(Input.mouse.x + camera.x - 1, Input.mouse.y + camera.y - 1, 5, 5);
 
         ctx.save();
 
@@ -57,8 +55,8 @@ class Player {
         ctx.rotate(this.rotation + 1.5708);
 
         // draw player box
-        ctx.fillStyle = this.collider.fill;
-        ctx.fillRect(-this.pivot.x, -this.pivot.y, this.size, this.size);
+        //ctx.fillStyle = "blue";
+        //ctx.fillRect(-this.pivot.x, -this.pivot.y, this.size, this.size);
 
         // draw player
         ctx.drawImage(this.sprite, this.currentFrame * this.size, 0, this.size, this.size, -this.pivot.x, -this.pivot.y, this.size, this.size);
@@ -66,11 +64,11 @@ class Player {
         ctx.restore();
 
         // draw collider
-        ctx.beginPath();
-        ctx.arc(this.collider.x, this.collider.y, this.collider.r, 0, pi2, false);
-        ctx.strokeStyle = this.collider.stroke;
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        //ctx.beginPath();
+        //ctx.arc(this.collider.x, this.collider.y, this.collider.r, 0, pi2, false);
+        //ctx.strokeStyle = "white";
+        //ctx.lineWidth = 3;
+        //ctx.stroke();
     }
 
     update() {

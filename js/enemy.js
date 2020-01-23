@@ -32,9 +32,7 @@ class Enemy {
         this.collider = {
             x: 0,
             y: 0,
-            r: this.pivot.x,
-            fill: "purple",
-            stroke: "white"
+            r: this.pivot.x
         }
 
         // sprite sheet animation
@@ -46,8 +44,8 @@ class Enemy {
 
     draw() {
         // draw the player position
-        ctx.fillStyle = "white";
-        ctx.fillRect(this.player.x, this.player.y, 10, 10);
+        //ctx.fillStyle = "white";
+        //ctx.fillRect(this.player.x, this.player.y, 10, 10);
 
         ctx.save();
 
@@ -56,8 +54,8 @@ class Enemy {
         ctx.rotate(this.rotation + 1.5708);
 
         // draw enemy box
-        ctx.fillStyle = this.collider.fill;
-        ctx.fillRect(-this.pivot.x, -this.pivot.y, this.size, this.size);
+        //ctx.fillStyle = "purple";
+        //ctx.fillRect(-this.pivot.x, -this.pivot.y, this.size, this.size);
 
         // draw enemy
         ctx.drawImage(this.sprite, this.currentFrame * this.size, 0, this.size, this.size, -this.pivot.x, -this.pivot.y, this.size, this.size);
@@ -65,11 +63,11 @@ class Enemy {
         ctx.restore();
 
         // draw collider
-        ctx.beginPath();
-        ctx.arc(this.collider.x, this.collider.y, this.collider.r, 0, pi2, false);
-        ctx.strokeStyle = this.collider.stroke;
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        //ctx.beginPath();
+        //ctx.arc(this.collider.x, this.collider.y, this.collider.r, 0, pi2, false);
+        //ctx.strokeStyle = "white";
+        //ctx.lineWidth = 3;
+        //ctx.stroke();
     }
 
     update() {

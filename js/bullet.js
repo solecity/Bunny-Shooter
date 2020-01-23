@@ -29,12 +29,6 @@ class Bullet {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, pi2);
         ctx.fill();
-
-        // draw collider
-        ctx.beginPath();
-        ctx.arc(this.collider.x, this.collider.y, this.collider.r, 0, pi2, false);
-        ctx.strokeStyle = "white";
-        ctx.stroke();
     }
     
     update() {
