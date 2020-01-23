@@ -100,11 +100,11 @@ function initialize() {
     NewPlayer();
 
     // initialize enemies
-    for (let i = 0; i < 1; i++)
+    for (let i = 0; i < 10; i++)
     {
-        enemies.push(new Enemy(graphics.enemy.image, 10, 20, player));
-        enemies.push(new Enemy(graphics.enemy.image, 50, 80, player));
-        //NewEnemy(player);
+        //enemies.push(new Enemy(graphics.enemy.image, 10, 20, player));
+        //enemies.push(new Enemy(graphics.enemy.image, 50, 80, player));
+        NewEnemy(player);
     }
     console.log(enemies)
 }

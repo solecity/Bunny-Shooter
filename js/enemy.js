@@ -139,6 +139,8 @@ function NewEnemy(player) {
     };
 
     let origin = [left, right, top, bottom];
+
+    let enemy = origin[Math.round(RandomBetween(0, 3))];
     
     enemies.push(new Enemy(graphics.enemy.image, enemy.x, enemy.y, player));
 }
