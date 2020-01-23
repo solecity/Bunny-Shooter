@@ -98,8 +98,8 @@ function SetupMouseEvents() {
 
 function MouseDown(event) {
     var rect = canvas.getBoundingClientRect();
-    Input.mouse.x = event.clientX - rect.left;
-    Input.mouse.y = event.clientY - rect.top;
+    var clickX = event.clientX - rect.left;
+    var clickY = event.clientY - rect.top;
 
     Input.mouse.pressed = true;
 
@@ -108,8 +108,8 @@ function MouseDown(event) {
 
 function MouseUp(event) {
     var rect = canvas.getBoundingClientRect();
-    Input.mouse.x = event.clientX - rect.left;
-    Input.mouse.x = event.clientY - rect.top;
+    var clickX = event.clientX - rect.left;
+    var clickY = event.clientY - rect.top;
 
     Input.mouse.pressed = false;
 
