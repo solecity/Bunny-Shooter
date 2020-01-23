@@ -70,7 +70,7 @@ let buttonHoover;
 
 
 // GAME
-let gameState = 1;
+let gameState = 0;
 let gameRound;
 let camera, scene
 let background, middleground, foreground;

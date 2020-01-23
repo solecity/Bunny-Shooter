@@ -124,8 +124,12 @@ function Gameplay() {
     }
 
     // generate enemy
-    enemy.update();
-    enemy.draw();
+    if (enemies.length != 0) {
+        for (let i = 0; i < enemies.length; i++) {
+            enemies[i].update();
+            enemies[i].draw();
+        }
+    }
 
     foreground.draw();
 
@@ -134,15 +138,39 @@ function Gameplay() {
     // ui
     UI();
 
+    // collisions enemy - bullet
+    for (let i = 0; i < enemies.length; i++) {
+        for (let j = 0; j < player.bullets.length; j++) {
+            if (collisions(player.bullets[j], enemies[i].collider)) {
+                player.bullets[j].destroy(player.bullets[j]);
+                enemies[i].destroy(enemy);
+
+                score += 10;
+            }
+        }
+    }
+
+    // collisions enemy - player
+    for (let i = 0; i < enemies.length; i++) {
+        if (collisions(player.collider, enemies[i].collider)) {
+            console.log("player hiit")
+            player.hit = true;
+
+            enemies[i].destroy(enemies[i]);
+        }
+    }
+
     // if player gets hit by an enemy
     if (player.hit) {
         // audio
         audio.playerHit.currentTime = 0.01;
         audio.playerHit.play();
 
+        player.collider.fill = "red";
+
         // resets to center
-        player.x = canvas.width / 2;
-        player.y = canvas.height / 2;
+        //player.x = canvas.width / 2;
+        //player.y = canvas.height / 2;
 
         health -= 10;
 

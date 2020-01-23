@@ -51,13 +51,7 @@ function LoadResources(onloaded) {
     audio.gameover = new Audio("sounds/gameover.wav");
     audio.playerHit = new Audio("sounds/player.wav");
     audio.enemyDead = new Audio("sounds/bounce.wav");
-    audio.bullet = new Audio("sounds/throw.wav");  
-
-    // initialize background elements
-    CreateScene();
-    CreateBackground();
-    CreateMiddleground();
-    CreateForeground();
+    audio.bullet = new Audio("sounds/throw.wav");
 }
 
 
@@ -94,10 +88,29 @@ function Loop() {
     Animate();
 }
 
+// INITIALIZE ELEMENTS
+function initialize() {
+    // initialize background elements
+    CreateScene();
+    CreateBackground();
+    CreateMiddleground();
+    CreateForeground();
+
+    // initialize player
+    NewPlayer();
+
+    // initialize enemies
+    for (let i = 0; i < 2; i++)
+    {
+        NewEnemy();
+    }
+}
+
 
 // GAME STATE
 function ChangeState() {
     buttons = [];
+    enemies = []
 
     flowerGroups = [];
     fireflies = [];
@@ -106,6 +119,8 @@ function ChangeState() {
     let y = [canvas.height / 2 + 50, 2 * canvas.height / 4];
     let sy = [0, 60, 120, 180];
     let nextState;
+
+    initialize();
 
     switch (gameState) {
 
@@ -121,15 +136,11 @@ function ChangeState() {
             gameRound = 0;
             score = 0;
             health = 100;
-
-            //CreateMiddleground();
             
             background.start();
             middleground.start();
             foreground.start();
 
-            NewPlayer();
-            NewEnemy();
             camera = new Camera(player);
             break;
         case 2:     // Game over
@@ -159,4 +170,19 @@ function Animate() {
 // generate random value
 function RandomBetween(min, max) {
     return min + (Math.random() * (max - min));
+}
+
+// collisions
+function collisions(circle1, circle2)
+{
+    let distX = circle1.x - circle2.x;
+    let distY = circle1.y - circle2.y;
+
+    let dist = Math.sqrt
+    (
+        distX * distX +
+        distY * distY
+    );
+
+    return dist < circle2.r;
 }

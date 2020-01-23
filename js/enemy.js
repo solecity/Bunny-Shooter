@@ -1,6 +1,6 @@
 
 class Enemy {
-    constructor(sprite, x, y, player) {
+    constructor(sprite, x, y) {
         // sprite data
         this.sprite = sprite;
 
@@ -17,17 +17,15 @@ class Enemy {
             y: this.size / 2
         };
 
-        // target
-        this.player = player;
-
         // sprite movement / direction
         this.speed = -RandomBetween(20, 80);
         this.rotation = 0;
 
         // check if is alive
+        this.hit = false;
         this.dead = false;
 
-        // box collider
+        // collider
         this.collider = {
             x: 0,
             y: 0,
@@ -83,8 +81,8 @@ class Enemy {
 
         // rotation to face player
         this.rotation = Math.atan2(
-            this.player.y + camera.y - this.y,
-            this.player.x + camera.x - this.x
+            player.y + camera.y - this.y,
+            player.x + camera.x - this.x
         );
 
         // initial position of collider
@@ -101,44 +99,45 @@ class Enemy {
         this.y += disp.y * this.speed * dt.global;
 
         // if enemy hits player
-        if (this.collisionPlayer(player, this) && !player.hit) {
+        if (this.hit) {
             console.log("hit player");
 
+            player.hit = true;   
             this.dead = true;
-
-            player.hit = true;            
-        }
-
-        if (this.dead) {
-            // DESTROY ENEMY
         }
     }
+    
+    destroy(enemy) {
+        // audio
+        audio.enemyDead.currentTime = 0.01;
+        audio.enemyDead.play();
 
-    collisionPlayer(player, enemy) {
-        let dx = this.collider.x - this.player.collider.x;
-        let dy = this.collider.y - this.player.collider.y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < this.collider.r + this.player.collider.r) {
-            isCollision = true;
-            player.collider.fill = "rgba(0, 255, 230, 0.25)";
-        }
-        else {
-            isCollision = false;
-            player.collider.fill = "blue";
-        }
-
-        return isCollision;
+        enemies.splice(enemy, 1);
     }
 }
 
 function NewEnemy() {
-    let position = {
-        x: 50,
-        y: RandomBetween(10, scene.h - 200)
-    }
+    let left = {
+        x: RandomBetween(-50, 0),
+        y: RandomBetween(-50, scene.h + 50)
+    };
+    let right = {
+        x: RandomBetween(scene.w, scene.w + 50),
+        y: RandomBetween(-50, scene.h + 50)
+    };
+    let top = {
+        x: RandomBetween(-50, scene.w + 50),
+        y: RandomBetween(-50, 0)
+    };
+    let bottom = {
+        x: RandomBetween(-50, scene.w + 50),
+        y: RandomBetween(scene.h, scene.h + 50)
+    };
 
-    enemy = new Enemy(graphics.enemy.image, position.x, position.y, player);
+    let origin = [left, right, top, bottom];
 
-    //enemies.push(new Enemy(graphics.enemy.image, position.x, position.y));
+    let enemy = origin[Math.round(RandomBetween(0, 3))];
+    console.log(enemy)
+    
+    enemies.push(new Enemy(graphics.enemy.image, enemy.x, enemy.y));
 }

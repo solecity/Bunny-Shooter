@@ -21,9 +21,9 @@ class Player {
         this.speed = 200;
         this.rotation = 0;
 
-        // check if player got hit
-        this.dead = false;
+        // collision bools
         this.hit = false;
+        this.dead = false;
 
         // box collider
         this.collider = {
@@ -138,7 +138,7 @@ class Player {
 
                 // audio
                 audio.bullet.currentTime = 0.01;
-                audio.bullet.play();  
+                audio.bullet.play();
 
                 this.shootBullets();
             }
@@ -150,8 +150,9 @@ class Player {
         }
 
         // update the bullets
-        for (let i = 0; i < this.bullets.length; i++)
+        for (let i = 0; i < this.bullets.length; i++) {
             this.bullets[i].update();
+        }
     }
 
     // new bullet
@@ -162,6 +163,9 @@ class Player {
         }
 
         NewBullet(this, target);
+    }
+
+    destroy() {
     }
 }
 
