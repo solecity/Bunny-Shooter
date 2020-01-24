@@ -139,7 +139,7 @@ function Gameplay() {
         for (let j = 0; j < player.bullets.length; j++) {
             if (collisions(player.bullets[j], enemies[i].collider)) {
                 player.bullets[j].destroy(player.bullets[j]);
-                enemies[i].destroy(enemies[i]);
+                enemies[i].destroy(i);
 
                 i--;
                 j--;
@@ -152,10 +152,10 @@ function Gameplay() {
     // collisions enemy - player
     for (let i = 0; i < enemies.length; i++) {
         if (collisions(enemies[i].collider, player.collider)) {
-            console.log("player hiit")
             player.hit = true;
 
-            enemies[i].destroy(enemies[i]);
+            enemies[i].destroy(i);
+
             i--;
         }
     }
