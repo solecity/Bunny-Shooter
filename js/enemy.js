@@ -83,8 +83,8 @@ class Enemy {
 
         // rotation to face player
         this.rotation = Math.atan2(
-            this.player.y + camera.y - this.y,
-            this.player.x + camera.x - this.x
+            this.player.y - this.y,
+            this.player.x - this.x
         );
 
         // initial position of collider

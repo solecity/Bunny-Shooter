@@ -126,7 +126,7 @@ function ChangeState() {
     switch (gameState) {
 
         case 0:     // Start menu
-            audio.menu.currentTime = 0.01;
+            //audio.menu.currentTime = 0.01;
             audio.menu.play();
             isGameover = false;
             nextState = 1;
@@ -148,7 +148,7 @@ function ChangeState() {
             camera = new Camera(player);
             break;
         case 2:     // Game over
-            audio.menu.currentTime = 0.01;
+            //audio.menu.currentTime = 0.01;
             audio.menu.play();
             nextState = 1;
             NewButton(y[0], sy[1], nextState);

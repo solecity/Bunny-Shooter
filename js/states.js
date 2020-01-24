@@ -75,12 +75,8 @@ function UI() {
     ctx.lineWidth = 4;
     ctx.strokeRect(canvas.width - 1.8 * bar.w, icon.pos + bar.h / 2, bar.w, bar.h);
 
-    if (bar.health > 50) {
-        ctx.fillStyle = bar.color[1];
-    }
-    else {
-        ctx.fillStyle = bar.color[0];
-    }
+    ctx.fillStyle = bar.health > 50 ? bar.color[1] : bar.color[0];
+
     ctx.fillRect(canvas.width - 1.8 * bar.w, icon.pos + bar.h / 2, health, bar.h);
 
     // player score
@@ -143,7 +139,10 @@ function Gameplay() {
         for (let j = 0; j < player.bullets.length; j++) {
             if (collisions(player.bullets[j], enemies[i].collider)) {
                 player.bullets[j].destroy(player.bullets[j]);
-                enemies[i].destroy(enemy);
+                enemies[i].destroy(enemies[i]);
+
+                i--;
+                j--;
 
                 score += 10;
             }
@@ -157,6 +156,7 @@ function Gameplay() {
             player.hit = true;
 
             enemies[i].destroy(enemies[i]);
+            i--;
         }
     }
 
@@ -166,7 +166,7 @@ function Gameplay() {
         audio.playerHit.currentTime = 0.01;
         audio.playerHit.play();
 
-        player.collider.fill = "red";
+        //player.collider.fill = "red";
 
         // resets to center
         //player.x = canvas.width / 2;
